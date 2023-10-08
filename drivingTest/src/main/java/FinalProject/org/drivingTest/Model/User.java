@@ -1,6 +1,7 @@
 package FinalProject.org.drivingTest.Model;
 
 import jakarta.persistence.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "Users")
@@ -16,12 +17,12 @@ public class User {
     public User(int id, String username, String password) {
         this.userId = id;
         this.username = username;
-        this.password = password;
+        this.password = hashPassword(password);
     }
 
     public User(String username, String password) {
         this.username = username;
-        this.password = password;
+        this.password = hashPassword(password);
     }
 
     public User() {
@@ -48,6 +49,10 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = hashPassword(password);
     }
+    public String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
 }
